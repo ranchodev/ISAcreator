@@ -4,9 +4,9 @@ import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.isatools.isacreator.configuration.Ontology;
-import org.isatools.isacreator.ontologymanager.bioportal.io.AcceptedOntologies;
-import org.isatools.isacreator.ontologymanager.bioportal.jsonresulthandlers.BioPortalAnnotatorResultHandler;
-import org.isatools.isacreator.ontologymanager.bioportal.model.AnnotatorResult;
+import org.isatools.isacreator.ontologymanager.scigraph.io.AcceptedOntologies;
+import org.isatools.isacreator.ontologymanager.scigraph.jsonresulthandlers.SciGraphAnnotatorResultHandler;
+import org.isatools.isacreator.ontologymanager.scigraph.model.AnnotatorResult;
 import uk.ac.ebi.utils.io.DownloadUtils;
 
 import java.io.File;
@@ -71,7 +71,7 @@ public class AnnotatorSearchClient {
     }
 
     private Map<String, Map<String, AnnotatorResult>> processContent(String content, String originalText, Set<String> terms) {
-        BioPortalAnnotatorResultHandler handler = new BioPortalAnnotatorResultHandler();
+        SciGraphAnnotatorResultHandler handler = new SciGraphAnnotatorResultHandler();
         return handler.getSearchResults(content, originalText, terms);
     }
 

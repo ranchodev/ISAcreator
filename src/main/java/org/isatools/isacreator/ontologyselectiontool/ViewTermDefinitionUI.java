@@ -43,7 +43,7 @@ import org.isatools.isacreator.common.CommonMouseAdapter;
 import org.isatools.isacreator.common.UIHelper;
 import org.isatools.isacreator.configuration.OntologyBranch;
 import org.isatools.isacreator.ontologymanager.OntologyService;
-import org.isatools.isacreator.ontologymanager.bioportal.io.AcceptedOntologies;
+import org.isatools.isacreator.ontologymanager.scigraph.io.AcceptedOntologies;
 import org.isatools.isacreator.ontologymanager.common.OntologyTerm;
 import org.jdesktop.fuse.InjectedResource;
 import org.jdesktop.fuse.ResourceInjector;
@@ -147,6 +147,8 @@ public class ViewTermDefinitionUI extends JPanel {
                         url = "http://www.ebi.ac.uk/ontology-lookup/?termId=" + termSource + ":" + term.getComments().get("accession");
                     } else if (serviceProvider.equalsIgnoreCase("bioportal")) {
                         url = "http://bioportal.bioontology.org/ontologies/" + termSource.substring(termSource.lastIndexOf("/") + 1) + "?p=classes&conceptid=" + term.getBranchIdentifier();
+                    } else if (serviceProvider.equalsIgnoreCase("scigraph")) {
+                        url = term.getBranchName();
                     }
 
                     System.out.println(url);

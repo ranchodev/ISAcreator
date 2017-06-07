@@ -37,6 +37,7 @@
 
 package org.isatools.isacreator.utils;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.isatools.isacreator.settings.ISAcreatorProperties;
 
@@ -159,6 +160,47 @@ public class PropertyFileIO {
             log.info("Setting the proxy information was problematic. Some values didn't exist.");
 
         }
+    }
+
+    public static void setSciGraph(Properties p) {
+
+        try {
+            System.getProperties().put("scigraph.use", p.getProperty("scigraph.use"));
+
+            System.getProperties().put("scigraph.host",
+                    getSciGraphProperty(p, "scigraph.host"));
+            System.getProperties().put("scigraph.port",
+                    getSciGraphProperty(p, "scigraph.port"));
+            System.getProperties().put("scigraph.ontology.default",
+                    getSciGraphProperty(p, "scigraph.ontology.default"));
+            System.getProperties().put("scigraph.search.limit",
+                    getSciGraphProperty(p, "scigraph.search.limit"));
+            System.getProperties().put("scigraph.search.synonyms",
+                    getSciGraphProperty(p, "scigraph.search.synonyms"));
+            System.getProperties().put("scigraph.search.abbreviations",
+                    getSciGraphProperty(p, "scigraph.search.abbreviations"));
+            System.getProperties().put("scigraph.search.acronyms",
+                    getSciGraphProperty(p, "scigraph.search.acronyms"));
+            System.getProperties().put("scigraph.search.deprecated",
+                    getSciGraphProperty(p, "scigraph.search.deprecated"));
+
+        } catch (NullPointerException npe) {
+            // thrown when a property doesn't exist. In this case, the program should not fail, just carry on. We should also report it
+            log.error(npe.getMessage());
+            log.info("Setting the scigraph information was problematic. Some values didn't exist.");
+
+        }
+    }
+
+    /**
+     * Returns default SciGraph settings (if SciGraph is enabled actually)
+     *
+     * @param p properties
+     * @param prop property name
+     * @return
+     */
+    public static String getSciGraphProperty(final Properties p, final String prop) {
+        return Boolean.valueOf(p.getProperty("scigraph.use")) ? p.getProperty(prop) : StringUtils.EMPTY;
     }
 
     enum IgnoredProperties {

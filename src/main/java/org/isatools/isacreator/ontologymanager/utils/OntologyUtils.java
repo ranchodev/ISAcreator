@@ -4,7 +4,7 @@ import org.isatools.isacreator.configuration.Ontology;
 import org.isatools.isacreator.configuration.OntologyBranch;
 import org.isatools.isacreator.ontologymanager.BioPortal4Client;
 import org.isatools.isacreator.ontologymanager.OntologySourceRefObject;
-import org.isatools.isacreator.ontologymanager.bioportal.model.OntologyPortal;
+import org.isatools.isacreator.ontologymanager.scigraph.model.OntologyPortal;
 import org.isatools.isacreator.ontologymanager.common.OntologyTerm;
 import org.isatools.isacreator.utils.StringProcessing;
 
@@ -23,11 +23,11 @@ public class OntologyUtils {
     }
 
     public static OntologyPortal getSourceOntologyPortalByVersionAndId(Ontology ontology) {
-        return OntologyPortal.BIOPORTAL;
+        return OntologyPortal.SCIGRAPH;
     }
 
     public static OntologyPortal getSourceOntologyPortalByVersion(String version) {
-        return OntologyPortal.BIOPORTAL;
+        return OntologyPortal.SCIGRAPH;
     }
 
     private static boolean checkVersion(String version) {

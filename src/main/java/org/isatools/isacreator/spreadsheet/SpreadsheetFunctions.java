@@ -41,6 +41,8 @@ import org.apache.commons.collections15.set.ListOrderedSet;
 import org.apache.log4j.Logger;
 import org.isatools.isacreator.autofiltercombo.AutoFilterCombo;
 import org.isatools.isacreator.autofiltercombo.AutoFilterComboCellEditor;
+import org.isatools.isacreator.ontologycombo.OntologyCombo;
+import org.isatools.isacreator.ontologycombo.OntologyComboCellEditor;
 import org.isatools.isacreator.common.UIHelper;
 import org.isatools.isacreator.configuration.DataTypes;
 import org.isatools.isacreator.configuration.FieldObject;
@@ -263,6 +265,7 @@ public class SpreadsheetFunctions {
                     ps.print( separator + toPrint);
                 }
                 if (tc.getCellEditor() instanceof OntologyCellEditor ||
+                        tc.getCellEditor() instanceof OntologyComboCellEditor ||
                         tc.getHeaderValue().toString().equalsIgnoreCase("unit")) {
                     ps.print(separator + "\"Term Source REF\"");
                     ps.print(separator + "\"Term Accession Number\"");
@@ -291,6 +294,7 @@ public class SpreadsheetFunctions {
                         val = spreadsheet.getTable().getValueAt(rows, cols).toString();
 
                         if (tc.getCellEditor() instanceof OntologyCellEditor ||
+                                tc.getCellEditor() instanceof OntologyComboCellEditor ||
                                 tc.getHeaderValue().toString()
                                         .equalsIgnoreCase("unit")) {
 
@@ -321,6 +325,7 @@ public class SpreadsheetFunctions {
                         }
                     } else {
                         if (tc.getCellEditor() instanceof OntologyCellEditor ||
+                                tc.getCellEditor() instanceof OntologyComboCellEditor ||
                                 tc.getHeaderValue().toString()
                                         .equalsIgnoreCase("unit")) {
                             // add triple separated value for term : source : accession triple
@@ -1015,8 +1020,9 @@ public class SpreadsheetFunctions {
                 recommendedOntologyMap = spreadsheet.getTableReferenceObject().getRecommendedSource(columnName);
             }
 
-            col.setCellEditor(new OntologyCellEditor(spreadsheet.getTableReferenceObject().acceptsMultipleValues(columnName),
-                    spreadsheet.getTableReferenceObject().forceOntology(columnName), recommendedOntologyMap));
+            // col.setCellEditor(new OntologyCellEditor(spreadsheet.getTableReferenceObject().acceptsMultipleValues(columnName),
+            //         spreadsheet.getTableReferenceObject().forceOntology(columnName), recommendedOntologyMap));
+            col.setCellEditor(new OntologyComboCellEditor(new OntologyCombo(recommendedOntologyMap)));
             return;
         }
 

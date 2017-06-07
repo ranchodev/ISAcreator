@@ -75,6 +75,7 @@ public class SettingsUtil extends AbstractDataEntryEnvironment {
     private JPanel centralPanel;
     private HTTPProxySettings httpProxy;
     private OntologySettings ontology;
+    private SciGraphSettings scigraph;
     private DataLocationSettings dataLocationSettings;
     private ValidationSettings validationSettings;
 
@@ -187,6 +188,13 @@ public class SettingsUtil extends AbstractDataEntryEnvironment {
                         }
 
                         changeCentralPanel(ontology);
+                    } else if (Settings.resolveSetting(settingsOptions.getSelectedValue().toString()) == Settings.SCIGRAPH) {
+
+                        if (scigraph == null) {
+                            scigraph = new SciGraphSettings(settings);
+                        }
+
+                        changeCentralPanel(scigraph);
                     } else if (Settings.resolveSetting(settingsOptions.getSelectedValue().toString()) == Settings.CONTACTS) {
 
                         if (contactEditor == null) {
@@ -270,6 +278,10 @@ public class SettingsUtil extends AbstractDataEntryEnvironment {
             ontology.updateSettings();
         }
 
+        if (scigraph != null) {
+            scigraph.updateSettings();
+        }
+
         if (contactEditor != null) {
             contactEditor.updateSettings();
         }
@@ -289,13 +301,14 @@ public class SettingsUtil extends AbstractDataEntryEnvironment {
         PropertyFileIO.updateISAcreatorProperties(settings);
         PropertyFileIO.saveProperties(settings, PROPERTIES_FILE);
         PropertyFileIO.setProxy(settings);
+        PropertyFileIO.setSciGraph(settings);
     }
 
 
     enum Settings {
         HTTP_PROXY("http proxy"), ONTOLOGY("ontologies"),
         CONTACTS("contacts"), PROTOCOLS("protocols"), DATA_LOCATIONS("program file locations"),
-        VALIDATION("validation");
+        VALIDATION("validation"), SCIGRAPH("scigraph");
         private String name;
 
         Settings(String name) {

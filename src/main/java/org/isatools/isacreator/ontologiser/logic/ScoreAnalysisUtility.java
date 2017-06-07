@@ -1,7 +1,7 @@
 package org.isatools.isacreator.ontologiser.logic;
 
 import org.isatools.isacreator.ontologiser.model.SuggestedAnnotation;
-import org.isatools.isacreator.ontologymanager.bioportal.model.ScoringConfidence;
+import org.isatools.isacreator.ontologymanager.scigraph.model.ScoringConfidence;
 import uk.ac.ebi.utils.collections.Pair;
 
 

@@ -37,6 +37,7 @@
 
 package org.isatools.isacreator.spreadsheet;
 
+import org.isatools.isacreator.ontologycombo.OntologyComboCellEditor;
 import org.isatools.isacreator.autofilterfield.DefaultAutoFilterCellEditor;
 import org.isatools.isacreator.calendar.DateCellEditor;
 import org.isatools.isacreator.filechooser.FileSelectCellEditor;
@@ -49,6 +50,7 @@ import org.isatools.isacreator.utils.GeneralUtils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
@@ -75,7 +77,8 @@ public class CustomTable extends JTable {
                 editor instanceof FileSelectCellEditor ||
                 editor instanceof DateCellEditor ||
                 editor instanceof FilterableListCellEditor ||
-                editor instanceof PluginSpreadsheetWidget) {
+                editor instanceof PluginSpreadsheetWidget ||
+                editor instanceof OntologyComboCellEditor) {
 
             if (eventObject instanceof MouseEvent && ((MouseEvent) eventObject).getClickCount() == 2) {
                 super.editCellAt(row, column, eventObject);
@@ -135,6 +138,16 @@ public class CustomTable extends JTable {
             ((JTextField) c).selectAll();
         }
         return c;
+    }
+
+    @Override
+    public Component prepareRenderer
+            (TableCellRenderer renderer, int row, int column) {
+        Component component = super.prepareRenderer(renderer, row, column);
+        getColumnModel().getColumn(column).setPreferredWidth(Math.max(
+                (int) component.getPreferredSize().getWidth() + getIntercellSpacing().width,
+                (int) getColumnModel().getColumn(column).getPreferredWidth()));
+        return component;
     }
 
     public int columnViewIndextoModel(int vColIndex) {

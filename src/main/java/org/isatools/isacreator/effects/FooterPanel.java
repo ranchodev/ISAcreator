@@ -62,15 +62,23 @@ public class FooterPanel extends JComponent {
     private boolean resizing = false;
     private ImageIcon resizeIcon;
 
+    // Replace horizontal glue with statusbar (isatab_files path by default)
+    private Component statusText;
+
     public FooterPanel(JFrame container) {
-        this(container, UIHelper.BG_COLOR, new ImageIcon(FooterPanel.class.getResource("/images/effects/resize_active.png")));
+        this(container, UIHelper.BG_COLOR, new ImageIcon(FooterPanel.class.getResource("/images/effects/resize_active.png")), Box.createHorizontalGlue());
     }
 
-    public FooterPanel(final JFrame container, Color bgColor, ImageIcon resizeIcon) {
+    public FooterPanel(JFrame container, JLabel statusText) {
+        this(container, UIHelper.BG_COLOR, new ImageIcon(FooterPanel.class.getResource("/images/effects/resize_active.png")), statusText);
+    }
+
+    public FooterPanel(final JFrame container, Color bgColor, ImageIcon resizeIcon, Component statusText) {
         this.container = container;
         setLayout(new GridBagLayout());
         setBackground(bgColor);
         this.resizeIcon = resizeIcon;
+        this.statusText = statusText;
         instantiateComponent();
         installListeners();
 
@@ -146,7 +154,7 @@ public class FooterPanel extends JComponent {
     }
 
     private void instantiateComponent() {
-        add(Box.createHorizontalGlue(),
+        add(statusText, //Box.createHorizontalGlue(),
                 new GridBagConstraints(0, 0,
                         1, 1,
                         1.0, 1.0,

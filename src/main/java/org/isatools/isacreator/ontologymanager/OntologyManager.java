@@ -39,7 +39,7 @@ package org.isatools.isacreator.ontologymanager;
 
 import org.isatools.isacreator.configuration.Ontology;
 import org.isatools.isacreator.configuration.RecommendedOntology;
-import org.isatools.isacreator.ontologymanager.bioportal.io.AcceptedOntologies;
+import org.isatools.isacreator.ontologymanager.scigraph.io.AcceptedOntologies;
 import org.isatools.isacreator.ontologymanager.common.OntologyTerm;
 import org.isatools.isacreator.settings.ISAcreatorProperties;
 
@@ -55,6 +55,7 @@ public class OntologyManager {
     //ontology term providers
     public static final String OLS = "OLS";
     public static final String BIO_PORTAL = "BioPortal";
+    public static final String SCI_GRAPH = "SciGraph";
 
     private static boolean foundURIs = false;
 

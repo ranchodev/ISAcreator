@@ -37,6 +37,7 @@
 
 package org.isatools.isacreator.gui.menu;
 
+import org.apache.commons.lang.StringUtils;
 import org.isatools.isacreator.common.CommonMouseAdapter;
 import org.isatools.isacreator.formatmappingutility.ui.MappingUtilView;
 import org.isatools.isacreator.gui.DataEntryEnvironment;
@@ -227,6 +228,8 @@ public class CreateISATABMenu extends MenuUIComponent {
 
                 ApplicationManager.getCurrentApplicationInstance().setCurrentPage(dataEntryEnvironment);
                 ApplicationManager.getCurrentApplicationInstance().setCurDataEntryPanel(dataEntryEnvironment);
+
+                ApplicationManager.setCurrentLocalISATABFolder(StringUtils.EMPTY);
 
             }
         });

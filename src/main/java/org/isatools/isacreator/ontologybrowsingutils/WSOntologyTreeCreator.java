@@ -39,7 +39,7 @@ package org.isatools.isacreator.ontologybrowsingutils;
 import org.isatools.isacreator.configuration.Ontology;
 import org.isatools.isacreator.configuration.OntologyBranch;
 import org.isatools.isacreator.configuration.RecommendedOntology;
-import org.isatools.isacreator.ontologymanager.BioPortal4Client;
+import org.isatools.isacreator.ontologymanager.SciGraph4Client;
 import org.isatools.isacreator.ontologymanager.OntologyService;
 import org.isatools.isacreator.ontologymanager.common.OntologyTerm;
 import org.isatools.isacreator.ontologymanager.utils.OntologyUtils;
@@ -74,7 +74,7 @@ public class WSOntologyTreeCreator implements OntologyTreeCreator, TreeSelection
     private Map<String, RecommendedOntology> ontologies;
 
     private Container browser;
-    private static BioPortal4Client bioportalClient;
+    private static SciGraph4Client bioportalClient;
 
     private JTree tree;
 
@@ -82,7 +82,7 @@ public class WSOntologyTreeCreator implements OntologyTreeCreator, TreeSelection
         this.browser = browser;
         this.tree = tree;
         observers = new ArrayList<TreeObserver>();
-        bioportalClient = new BioPortal4Client();
+        bioportalClient = new SciGraph4Client();
     }
 
     public DefaultMutableTreeNode createTree(Map<String, RecommendedOntology> ontologies) throws FileNotFoundException {

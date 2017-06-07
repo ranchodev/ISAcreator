@@ -50,7 +50,7 @@ import org.isatools.isacreator.ontologiser.ui.listrenderer.OntologyAssignedListR
 import org.isatools.isacreator.ontologiser.ui.listrenderer.ScoringConfidenceListRenderer;
 import org.isatools.isacreator.ontologymanager.BioPortal4Client;
 import org.isatools.isacreator.ontologymanager.OntologyService;
-import org.isatools.isacreator.ontologymanager.bioportal.model.AnnotatorResult;
+import org.isatools.isacreator.ontologymanager.scigraph.model.AnnotatorResult;
 import org.isatools.isacreator.ontologyselectiontool.ViewTermDefinitionUI;
 import org.jdesktop.fuse.InjectedResource;
 import org.jdesktop.fuse.ResourceInjector;

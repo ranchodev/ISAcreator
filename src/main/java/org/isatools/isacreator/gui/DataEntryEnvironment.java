@@ -459,7 +459,7 @@ public class DataEntryEnvironment extends AbstractDataEntryEnvironment implement
 
         JScrollPane treeScroll = new JScrollPane(overviewTree,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         treeScroll.setPreferredSize(new Dimension(210, 400));
         treeScroll.setBorder(new EtchedBorder(1, UIHelper.BG_COLOR, UIHelper.BG_COLOR));
 

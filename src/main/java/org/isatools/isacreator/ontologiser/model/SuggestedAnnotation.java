@@ -1,6 +1,6 @@
 package org.isatools.isacreator.ontologiser.model;
 
-import org.isatools.isacreator.ontologymanager.bioportal.model.AnnotatorResult;
+import org.isatools.isacreator.ontologymanager.scigraph.model.AnnotatorResult;
 
 /**
  * Created by the ISA team

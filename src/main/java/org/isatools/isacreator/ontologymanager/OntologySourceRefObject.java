@@ -39,7 +39,7 @@ package org.isatools.isacreator.ontologymanager;
 
 import org.isatools.isacreator.configuration.Ontology;
 import org.isatools.isacreator.model.ISASection;
-import org.isatools.isacreator.ontologymanager.bioportal.io.AcceptedOntologies;
+import org.isatools.isacreator.ontologymanager.scigraph.io.AcceptedOntologies;
 
 import java.io.Serializable;
 

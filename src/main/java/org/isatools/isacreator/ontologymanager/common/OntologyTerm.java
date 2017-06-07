@@ -180,7 +180,7 @@ public class OntologyTerm implements Comparable<OntologyTerm> {
         if (!ontologySource.equals("")){
             if (ISAcreatorProperties.getOntologyTermURIProperty())
                 if (ontologyTermIRI!=null && !ontologyTermIRI.equals(""))
-                    return ontologySource + ":" + getOntologyTermName();
+                    return /*ontologySource + ":" + */ getOntologyTermName();
         }
         return getOntologyTermName();
     }

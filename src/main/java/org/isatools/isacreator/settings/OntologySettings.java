@@ -50,8 +50,8 @@ import org.isatools.isacreator.io.OntologyLibrary;
 import org.isatools.isacreator.io.UserProfileManager;
 import org.isatools.isacreator.managers.ApplicationManager;
 import org.isatools.isacreator.ontologymanager.OntologyManager;
-import org.isatools.isacreator.ontologymanager.bioportal.io.AcceptedOntologies;
-import org.isatools.isacreator.ontologymanager.bioportal.io.AcceptedOntologiesLoader;
+import org.isatools.isacreator.ontologymanager.scigraph.io.AcceptedOntologies;
+import org.isatools.isacreator.ontologymanager.scigraph.io.AcceptedOntologiesLoader;
 import org.isatools.isacreator.ontologymanager.common.OntologyTerm;
 
 import javax.swing.*;
@@ -102,7 +102,7 @@ public class OntologySettings extends SettingsScreen {
     }
 
     private JPanel createOntologySourceUpdatePanel() {
-        JPanel informationPanel = new JPanel(new GridLayout(1, 2));
+        JPanel informationPanel = new JPanel(new GridLayout(2, 2));
 
         information = UIHelper.createLabel(String.format("<html><strong>%d ontologies</strong> are currently available.</html>", AcceptedOntologies.getAcceptedOntologies().size()), UIHelper.VER_10_PLAIN, UIHelper.GREY_COLOR);
         informationPanel.add(information);

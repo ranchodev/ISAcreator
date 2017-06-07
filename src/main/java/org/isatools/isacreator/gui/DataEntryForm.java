@@ -40,6 +40,8 @@ package org.isatools.isacreator.gui;
 import com.explodingpixels.macwidgets.IAppWidgetFactory;
 import org.apache.commons.collections15.OrderedMap;
 import org.apache.commons.collections15.map.ListOrderedMap;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.isatools.isacreator.calendar.CalendarGUI;
 import org.isatools.isacreator.common.DropDownComponent;
 import org.isatools.isacreator.common.TextEditUtility;
@@ -68,19 +70,32 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  *
  *
  */
 public class DataEntryForm extends JLayeredPane implements Serializable {
+
+    public static final String META_OPENING_TAG = "[[";
+    public static final String META_CLOSING_TAG = "]]";
+    public static final String META_TAG_DELIMITER = "|";
+    public static final String META_KEY_DELIMITER = "=";
+    public static final String META_KEY_TYPE = "type";
+    public static final String META_KEY_FORMAT = "format";
 
     public static final int SUBFORM_WIDTH = 300;
 
@@ -352,6 +367,8 @@ public class DataEntryForm extends JLayeredPane implements Serializable {
         Set<String> ontologyFields = referenceObject.getOntologyTerms(sectionToAddTo);
         Set<String> fieldsToIgnore = referenceObject.getFieldsToIgnore();
 
+        final Map<String, JComponent> fields = new HashMap<String, JComponent>();
+
         for (String fieldName : fieldValues.keySet()) {
 
             if (!fieldsToIgnore.contains(fieldName)) {
@@ -382,10 +399,44 @@ public class DataEntryForm extends JLayeredPane implements Serializable {
                         textComponent.setBackground(UIHelper.BG_COLOR);
                         textComponent.setBorder(UIHelper.GREEN_ROUNDED_BORDER);
                     } else if (fieldDescriptor.getDatatype() == DataTypes.LIST) {
+
+                        final Map<String, Map<String, String>> linkds = new HashMap<String, Map<String, String>>();
+
+                        for (int i = 0; i < fieldDescriptor.getFieldList().length; i++) {
+                            final String item = StringUtils.trim(StringUtils.substringBefore(
+                                    fieldDescriptor.getFieldList()[i], META_OPENING_TAG));
+                            linkds.put(item, getMetaKeyValuePairs(fieldDescriptor.getFieldList()[i]));
+                            // update list item
+                            fieldDescriptor.getFieldList()[i] = item;
+                        }
+
                         textComponent = new JComboBox(fieldDescriptor.getFieldList());
+                        // find and select value in combo box
+                        int index = ArrayUtils.indexOf(fieldDescriptor.getFieldList(), fieldValues.get(fieldName));
+                        if (index > -1) {
+                            ((JComboBox) textComponent).setSelectedIndex(index);
+                        }
+
+                        ((JComboBox) textComponent).addItemListener(new ItemListener() {
+                            public void itemStateChanged(ItemEvent e) {
+                                if (e.getStateChange() == ItemEvent.DESELECTED) return;
+
+                                Map<String, String> fieldsMap = linkds.get(e.getItem());
+                                for (String field : fieldsMap.keySet()) {
+                                    JComboBox component = (JComboBox) fields.get(field);
+                                    if (component != null) component.setSelectedItem(fieldsMap.get(field));
+                                }
+                            }
+                        });
                     } else {
                         textComponent = new RoundedJTextField(10);
                     }
+
+                    final Map<String, String> metadata = getMetaKeyValuePairs(fieldDescriptor.getDescription());
+                    textComponent.setInputVerifier(new CustomDateInputVerifier(metadata));
+
+                    // collect all fields (in order to updated 'linked' values)
+                    fields.put(fieldName, textComponent);
 
                     if (textComponent instanceof JTextArea || textComponent instanceof JTextComponent) {
                         ((JTextComponent) textComponent).setText(fieldValues.get(fieldName).equals("")
@@ -438,6 +489,132 @@ public class DataEntryForm extends JLayeredPane implements Serializable {
         }
     }
 
+    /**
+     * Returns map of meta descriptors
+     *
+     * @param desc string to be processed
+     * @return metadata
+     */
+    private HashMap<String, String> getMetaKeyValuePairs(final String desc) {
+        final HashMap<String, String> metadata = new HashMap<String, String>();
+
+        final String conf = StringUtils.substringBetween(desc, META_OPENING_TAG, META_CLOSING_TAG);
+        if (null == conf) {
+            return metadata;
+        }
+
+        for (String pair : StringUtils.split(conf, META_TAG_DELIMITER)) {
+            String[] dat = StringUtils.split(pair, META_KEY_DELIMITER);
+            metadata.put(dat[0], dat[1]);
+        }
+
+        return metadata;
+    }
+
+    /**
+     * Custom InputVerifier for fields of date type
+     */
+    class CustomDateInputVerifier extends InputVerifier {
+
+        final Map<String, String> conf;
+
+        CustomDateInputVerifier(Map<String, String> conf) {
+            this.conf = conf;
+        }
+
+        @Override
+        public boolean verify(final JComponent input) {
+
+            if (this.conf.isEmpty()) {
+                return true;
+            }
+
+            final RoundedJTextField field = (RoundedJTextField) input;
+
+            if (StringUtils.isEmpty(field.getText())) {
+                field.unsetWarningMode();
+                return true;
+            }
+            if ("date".equals(this.conf.get(META_KEY_TYPE))) {
+                final Date date = parseDate(field.getText(), getPredefinedDateFormats());
+
+                if (null == date) {
+                    field.setWarningMode();
+                } else {
+                    field.unsetWarningMode();
+                    updateFieldText(field, date);
+                }
+                return date != null;
+            }
+
+            return false;
+        }
+
+        /**
+         * Returns predefined date formats
+         *
+         * @return
+         */
+        private List<SimpleDateFormat> getPredefinedDateFormats() {
+            final List<SimpleDateFormat> formats = new ArrayList<SimpleDateFormat>();
+            formats.add(new SimpleDateFormat("MM-dd-yyyy"));
+            formats.add(new SimpleDateFormat("yyyyMMdd"));
+
+            final String format = this.conf.get(META_KEY_FORMAT);
+            if (StringUtils.isNotEmpty(format)) formats.add(new SimpleDateFormat(format));
+
+            return formats;
+        }
+
+        /**
+         * Parses text into date
+         *
+         * @param text text to be processed
+         * @param formats date formats
+         * @return date or null
+         */
+        private Date parseDate(final String text, final List<SimpleDateFormat> formats) {
+            for (final SimpleDateFormat format : formats) {
+                final Date date = parseDate(text, format);
+                if (date != null) return date;
+            }
+            return null;
+        }
+
+        /**
+         * Parses text into date
+         *
+         * @param text text to be processed
+         * @param format date format
+         * @return date or null
+         */
+        private Date parseDate(final String text, final SimpleDateFormat format) {
+            try {
+                final Date date = format.parse(text);
+                if (text.equals(format.format(date))) {
+                    return date;
+                } else {
+                    return null;
+                }
+            } catch (final ParseException e) {
+                // cannot parse date, add warning
+                return null;
+            }
+        }
+
+        /**
+         * Formats date (according to configuration) and updates field value
+         *
+         * @param field text field
+         * @param date date
+         */
+        private void updateFieldText(final JTextField field, final Date date) {
+            final String format = this.conf.get(META_KEY_FORMAT);
+            if (StringUtils.isNotEmpty(format)) {
+                field.setText(new SimpleDateFormat(format).format(date));
+            }
+        }
+    }
 
     protected SubFormField generateSubFormField(Set<String> fieldsToIgnore, Set<String> ontologyFields, Study study, String fieldName) {
         FieldObject fieldDescriptor = study.getReferenceObject().getFieldDefinition(fieldName);
@@ -456,7 +633,7 @@ public class DataEntryForm extends JLayeredPane implements Serializable {
             int fieldType = SubFormField.STRING;
 
             boolean matchingOntologyDataType = true;
-            if(fieldDescriptor != null) {
+            if (fieldDescriptor != null) {
                 matchingOntologyDataType = fieldDescriptor.getDatatype() == DataTypes.ONTOLOGY_TERM;
             }
 

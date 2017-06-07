@@ -145,6 +145,8 @@ public class ISAcreator extends AnimatableJFrame implements WindowFocusListener 
     private OntologyPluginTracker ontologyPluginTracker;
     private JMenuItem useShortNames;
 
+    private JLabel status = new JLabel();
+
 
     public ISAcreator(Mode mode, BundleContext context) {
         this(mode, context, null);
@@ -276,7 +278,7 @@ public class ISAcreator extends AnimatableJFrame implements WindowFocusListener 
 
         createTopPanel();
 
-        FooterPanel fp = new FooterPanel(this);
+        FooterPanel fp = new FooterPanel(this, status);
         add(fp, BorderLayout.SOUTH);
 
         ((JComponent) getContentPane()).setBorder(new LineBorder(UIHelper.LIGHT_GREEN_COLOR, 1));
@@ -285,6 +287,11 @@ public class ISAcreator extends AnimatableJFrame implements WindowFocusListener 
     private void checkMenuRequired() {
         boolean menuRequired = currentPage instanceof DataEntryEnvironment;
         menuBar.getParent().setVisible(menuRequired);
+    }
+
+    private void checkStatusRequired() {
+        this.status.setText(
+                currentPage instanceof DataEntryEnvironment ? ApplicationManager.getCurrentLocalISAtabFolder() : "");
     }
 
     private void setupAboutPanel() {
@@ -834,6 +841,7 @@ public class ISAcreator extends AnimatableJFrame implements WindowFocusListener 
         }
 
         checkMenuRequired();
+        checkStatusRequired();
         getContentPane().add(currentPage, BorderLayout.CENTER);
 
         currentPage.setBorder(new EmptyBorder(0, 0, 0, 0));

@@ -55,7 +55,7 @@ import org.isatools.isacreator.effects.SingleSelectionListCellRenderer;
 import org.isatools.isacreator.ontologybrowsingutils.OntologyTreeItem;
 import org.isatools.isacreator.ontologybrowsingutils.WSOntologyTreeCreator;
 import org.isatools.isacreator.ontologymanager.*;
-import org.isatools.isacreator.ontologymanager.bioportal.model.OntologyPortal;
+import org.isatools.isacreator.ontologymanager.scigraph.model.OntologyPortal;
 import org.isatools.isacreator.ontologymanager.common.OntologyTerm;
 import org.isatools.isacreator.ontologymanager.utils.OntologyUtils;
 import org.isatools.isacreator.optionselector.OptionGroup;
@@ -872,18 +872,19 @@ public class OntologySelectionTool extends JFrame implements MouseListener, Onto
 
     private void instantiateBioPortalClientIfNull() {
         if (bioportalClient == null) {
-            bioportalClient = new BioPortal4Client();
+            // bioportalClient = new BioPortal4Client();
+            bioportalClient = new SciGraph4Client();
         }
     }
 
     private void searchSpecificOntologies() {
         OntologyManager.placeRecommendedOntologyInformationInRecords(recommendedOntologies.values());
 
-        List<RecommendedOntology> bioportalOntologies = filterRecommendedOntologiesForService(recommendedOntologies.values(), OntologyPortal.BIOPORTAL);
+        List<RecommendedOntology> bioportalOntologies = filterRecommendedOntologiesForService(recommendedOntologies.values(), OntologyPortal.SCIGRAPH);
 
         int totalResourcesSearchedOnByPluginResources = OntologySearchPluginRegistry.howManyOfTheseResourcesAreSearchedOnByPlugins(recommendedOntologies.values());
 
-        if (bioportalOntologies.size() > 0 && totalResourcesSearchedOnByPluginResources != recommendedOntologies.size()) {
+        if (bioportalOntologies.size() > 0 /* && totalResourcesSearchedOnByPluginResources != recommendedOntologies.size()*/ ) {
             Map<OntologySourceRefObject, List<OntologyTerm>> bioportalResult = bioportalClient.getTermsByPartialNameFromSource(searchField.getText(), bioportalOntologies);
 
             if (bioportalResult != null) {
@@ -951,9 +952,7 @@ public class OntologySelectionTool extends JFrame implements MouseListener, Onto
     private List<RecommendedOntology> filterRecommendedOntologiesForService(Collection<RecommendedOntology> ontologies, OntologyPortal filter) {
         List<RecommendedOntology> filteredOntologies = new ArrayList<RecommendedOntology>();
         for (RecommendedOntology ro : ontologies) {
-            if (OntologyUtils.getSourceOntologyPortal(ro.getOntology()) == filter) {
-                filteredOntologies.add(ro);
-            }
+            filteredOntologies.add(ro);
         }
 
         return filteredOntologies;

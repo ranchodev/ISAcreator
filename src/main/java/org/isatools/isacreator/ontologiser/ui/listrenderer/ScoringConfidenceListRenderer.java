@@ -38,7 +38,7 @@ package org.isatools.isacreator.ontologiser.ui.listrenderer;
 
 import org.isatools.isacreator.common.UIHelper;
 import org.isatools.isacreator.ontologiser.model.SuggestedAnnotation;
-import org.isatools.isacreator.ontologymanager.bioportal.model.ScoringConfidence;
+import org.isatools.isacreator.ontologymanager.scigraph.model.ScoringConfidence;
 import org.jdesktop.fuse.InjectedResource;
 import org.jdesktop.fuse.ResourceInjector;
 

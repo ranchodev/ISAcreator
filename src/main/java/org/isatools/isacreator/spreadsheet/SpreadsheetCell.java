@@ -73,6 +73,11 @@ public class SpreadsheetCell {
     }
 
     public String toString() {
+
+        if (value instanceof SpreadsheetCell) {
+            return "";
+        }
+
         try {
             return value == null ? "" : value.toString();
         } catch (Exception e) {

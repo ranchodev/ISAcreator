@@ -600,7 +600,7 @@ public class StudyDataEntry extends DataEntryForm {
     private void removeUnusedProtocols(String assayRef) {
         Assay assay = getStudy().getAssays().get(assayRef);
 
-        Set<String> protocolRefsInAssay = SpreadsheetUtils.findValuesForColumnInSpreadsheet(((AssaySpreadsheet) ApplicationManager.getUserInterfaceForISASection(study.getStudySample())).getSpreadsheet(), GeneralFieldTypes.PROTOCOL_REF.name);
+        Set<String> protocolRefsInAssay = SpreadsheetUtils.findValuesForColumnInSpreadsheet(((AssaySpreadsheet) ApplicationManager.getUserInterfaceForISASection(assay)).getSpreadsheet(), GeneralFieldTypes.PROTOCOL_REF.name);
 
         Set<String> fieldFocus = Collections.singleton(GeneralFieldTypes.PROTOCOL_REF.name);
 

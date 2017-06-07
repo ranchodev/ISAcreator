@@ -101,7 +101,7 @@ public class StringProcessing {
             return toClean;
         }
 
-        toClean = toClean.replaceAll("\"", "");
+        toClean = toClean.replaceAll("\"", "\\\\\"");
 
         //replace one or more spaces with just one space
         toClean = toClean.replaceAll("[\\s]+", " ");

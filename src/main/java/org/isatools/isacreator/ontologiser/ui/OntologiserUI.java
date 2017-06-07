@@ -43,7 +43,7 @@ import org.isatools.isacreator.common.dialog.ConfirmationDialog;
 import org.isatools.isacreator.gui.ISAcreator;
 import org.isatools.isacreator.ontologiser.adaptors.ContentAdaptor;
 import org.isatools.isacreator.ontologiser.logic.impl.AnnotatorSearchClient;
-import org.isatools.isacreator.ontologymanager.bioportal.model.AnnotatorResult;
+import org.isatools.isacreator.ontologymanager.scigraph.model.AnnotatorResult;
 import org.jdesktop.fuse.InjectedResource;
 import org.jdesktop.fuse.ResourceInjector;
 

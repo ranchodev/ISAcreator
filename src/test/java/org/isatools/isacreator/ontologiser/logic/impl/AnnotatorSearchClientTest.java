@@ -1,6 +1,6 @@
 package org.isatools.isacreator.ontologiser.logic.impl;
 
-import org.isatools.isacreator.ontologymanager.bioportal.model.AnnotatorResult;
+import org.isatools.isacreator.ontologymanager.scigraph.model.AnnotatorResult;
 import org.junit.Test;
 
 import java.util.HashSet;
