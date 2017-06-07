@@ -84,11 +84,7 @@ If the file does not exist yet, please create new with the following sample cont
 
 #### Repositories
 
-Clone the `ISAcreator` repository:
-
-```sh
-git clone https://git.xpansa.com/external/isacreator.git
-```
+Clone the `ISAcreator` repository (`scigraph` branch).
 
 #### Update compiler plugin settings
 
